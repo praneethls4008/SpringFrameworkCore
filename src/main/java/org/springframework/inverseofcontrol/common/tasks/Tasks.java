@@ -1,4 +1,4 @@
-package org.springframework.inverseofcontrol;
+package org.springframework.inverseofcontrol.common.tasks;
 
 import java.util.concurrent.Callable;
 

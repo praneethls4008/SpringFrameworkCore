@@ -1,18 +1,22 @@
-package org.springframework.inverseofcontrol;
+package org.springframework.inverseofcontrol.xmlbased;
 
-import java.sql.Time;
+import org.springframework.inverseofcontrol.common.cpu.CPU;
+import org.springframework.inverseofcontrol.common.tasks.Tasks;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
 public class Computer {
 
+
     public CPU cpu;
     public ExecutorService taskManager;
-    
-    public Computer(){
-        this.cpu = new AmdCPU();
-        //CPU cpu = new IntelCPU();
+
+
+    public Computer(CPU cpu){
+        this.cpu = cpu;
+        System.out.println("CPU used: " + this.cpu );
         this.taskManager = this.cpu.executor();
         
     }
@@ -38,6 +42,7 @@ public class Computer {
                 System.err.println(threadName +" time out (cancelling task)");
                 future.cancel(true);
             } catch (Exception e) {
+
                 e.printStackTrace();
 
             }
