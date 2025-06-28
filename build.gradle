@@ -12,7 +12,12 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    //for sprinf core IOC & DI
     implementation 'org.springframework:spring-context:7.0.0-M6'
+
+    //for predestroy and postinit spring bean annotations from java
+    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
 }
 
 test {

@@ -3,6 +3,7 @@ package org.springframework.inverseofcontrol.common.cpu;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 public class IntelCPU implements CPU {
 
     @Override

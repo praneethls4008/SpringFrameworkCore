@@ -1,5 +1,7 @@
 package org.springframework.inverseofcontrol.annotationbased;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.inverseofcontrol.common.cpu.CPU;
@@ -21,6 +23,15 @@ public class Computer {
     public CPU cpu;
     public ExecutorService taskManager;
 
+    @PostConstruct
+    public void postConstruct(){
+        System.out.println("Inside PostConstruct method");
+    }
+
+    @PreDestroy
+    public void preDestroy(){
+        System.out.println("Inside Pre destroy method");
+    }
 
     @Autowired
     public Computer(@Qualifier("Amd_CPU") CPU cpu){
@@ -37,7 +48,7 @@ public class Computer {
         List<Future<String>> futureTasks  = new ArrayList<>();
 
         //add tasks
-        for(int i=1; i<=10; i++) {
+        for(int i=1; i<=4; i++) {
             futureTasks.add(this.taskManager.submit(Tasks.createTask(i)));
         }
 

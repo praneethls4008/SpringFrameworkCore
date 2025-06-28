@@ -1,5 +1,8 @@
 package org.springframework.inverseofcontrol.javabased;
 
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.inverseofcontrol.common.cpu.CPU;
 import org.springframework.inverseofcontrol.common.tasks.Tasks;
 
@@ -10,11 +13,23 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class Computer {
+public class Computer implements InitializingBean,DisposableBean {
 
 
     public CPU cpu;
     public ExecutorService taskManager;
+
+    //init method after bean instantiated @postinit
+    @Override
+    public void afterPropertiesSet(){
+        System.out.println("Inside afterPropertiesSet method");
+    }
+
+    //before destroying bean @predestroy
+    @Override
+    public void destroy(){
+        System.out.println("Inside destroy method");
+    }
 
 
     public Computer(CPU cpu){
@@ -31,7 +46,7 @@ public class Computer {
         List<Future<String>> futureTasks  = new ArrayList<>();
 
         //add tasks
-        for(int i=1; i<=10; i++) {
+        for(int i=1; i<=4; i++) {
             futureTasks.add(this.taskManager.submit(Tasks.createTask(i)));
         }
 
@@ -55,6 +70,8 @@ public class Computer {
 
 
     }
+
+
 
 
 }

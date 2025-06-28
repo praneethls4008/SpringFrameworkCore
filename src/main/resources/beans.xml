@@ -5,7 +5,11 @@
 
     <bean id="amdCpu" class="org.springframework.inverseofcontrol.common.cpu.AmdCPU"/>
     <bean id="intelCpu" class="org.springframework.inverseofcontrol.common.cpu.IntelCPU"/>
-    <bean id="computer" class= "org.springframework.inverseofcontrol.xmlbased.Computer">
+    <bean id="computer" class= "org.springframework.inverseofcontrol.xmlbased.Computer"
+          init-method="init"
+          destroy-method="destroy"
+          lazy-init="true"
+    >
         <constructor-arg ref="intelCpu"/>
     </bean>
 

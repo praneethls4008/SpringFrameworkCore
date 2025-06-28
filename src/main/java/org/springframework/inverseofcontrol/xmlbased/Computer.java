@@ -14,6 +14,14 @@ public class Computer {
     public ExecutorService taskManager;
 
 
+    public void init(){
+        System.out.println("xmlBased init method");
+    }
+
+    public void destroy(){
+        System.out.println("xmlBased destroy method");
+    }
+
     public Computer(CPU cpu){
         this.cpu = cpu;
         System.out.println("CPU used: " + this.cpu );
@@ -28,7 +36,7 @@ public class Computer {
         List<Future<String>> futureTasks  = new ArrayList<>();
 
         //add tasks
-        for(int i=1; i<=10; i++) {
+        for(int i=1; i<=4; i++) {
             futureTasks.add(this.taskManager.submit(Tasks.createTask(i)));
         }
 
