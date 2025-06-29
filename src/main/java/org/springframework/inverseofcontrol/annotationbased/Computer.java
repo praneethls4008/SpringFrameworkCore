@@ -4,6 +4,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.inverseofcontrol.common.cpu.CPU;
 import org.springframework.inverseofcontrol.common.tasks.Tasks;
 import org.springframework.stereotype.Component;
@@ -34,9 +36,8 @@ public class Computer {
     }
 
     @Autowired
-    public Computer(@Qualifier("Amd_CPU") CPU cpu){
-        System.out.println("IntelCPU annoata");
-        this.cpu = cpu;
+    public Computer(@Value("${cpu.bean.name}") String cpu, ApplicationContext context){
+        this.cpu = (CPU) context.getBean(cpu);
         System.out.println("CPU used: " + this.cpu );
         this.taskManager = this.cpu.executor();
     }
