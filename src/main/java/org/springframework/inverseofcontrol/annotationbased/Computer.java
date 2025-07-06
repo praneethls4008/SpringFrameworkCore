@@ -35,7 +35,7 @@ public class Computer {
         System.out.println("Inside Pre destroy method");
     }
 
-    @Autowired
+    //@Autowired
     public Computer(@Value("${cpu.bean.name}") String cpu, ApplicationContext context){
         this.cpu = (CPU) context.getBean(cpu);
         System.out.println("CPU used: " + this.cpu );
