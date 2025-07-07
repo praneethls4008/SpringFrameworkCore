@@ -1,7 +1,6 @@
 package org.springframework.eventsHandling.listeners;
 
 import org.springframework.context.event.EventListener;
-import org.springframework.eventsHandling.business.User;
 import org.springframework.eventsHandling.events.LoggedInEvent;
 import org.springframework.eventsHandling.events.LoggedOutEvent;
 import org.springframework.eventsHandling.events.NewMemberEvent;
