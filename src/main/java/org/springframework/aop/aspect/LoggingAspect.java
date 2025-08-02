@@ -1,6 +1,7 @@
 package org.springframework.aop.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -15,12 +16,17 @@ import java.util.Arrays;
 public class LoggingAspect {
 
     @Pointcut("execution(* org.springframework.aop.business.*.*(..))")
-    public void selectALl(){
+    private void selectAll(){
 
     }
 
-//    @Around("selectAll")
-@Around("execution(* org.springframework.aop.business.*.*(..))")
+    @After("selectAll()")
+    public void after(){
+        System.out.println("!!!! After method !!!");
+    }
+
+    @Around("selectAll()")
+//@Around("execution(* org.springframework.aop.business.*.*(..))")
 public Object logger(ProceedingJoinPoint jointPoint) throws Throwable {
     Logger logger = LoggerFactory.getLogger(jointPoint.getSignature().getDeclaringType());
 
