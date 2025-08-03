@@ -4,6 +4,48 @@ plugins {
 }
 war {
     webAppDirName = 'src/main/webapp'
+    archiveBaseName.set('ROOT')
+}
+
+def tomcatWebapps = "C:/Program Files/Apache Software Foundation/Tomcat 11.0_Tomcat8111/webapps"   // ⬅ Replace with your Tomcat webapps folder
+def tomcatBin = "C:/Program Files/Apache Software Foundation/Tomcat 11.0_Tomcat8111/bin"            // ⬅ Replace with your Tomcat bin folder
+tasks.register("deployToTomcat") {
+    dependsOn tasks.named("war")
+
+    doLast {
+        def rootWar = file("${tomcatWebapps}/ROOT.war")
+        def rootFolder = file("${tomcatWebapps}/ROOT")
+
+        println "Stopping Tomcat..."
+        exec {
+            workingDir tomcatBin
+            commandLine 'cmd', '/c', 'catalina.bat', 'stop'
+            ignoreExitValue = true
+        }
+
+        println "Deleting old ROOT..."
+        if (rootFolder.exists()) {
+            rootFolder.deleteDir()
+        }
+        if (rootWar.exists()) {
+            rootWar.delete()
+        }
+
+        println "Copying new ROOT.war..."
+        copy {
+            from(tasks.named("war").get().archiveFile)
+            into(tomcatWebapps)
+            rename { "ROOT.war" }
+        }
+
+        println "Starting Tomcat..."
+        exec {
+            workingDir tomcatBin
+            commandLine 'cmd', '/c', 'catalina.bat', 'start'
+        }
+
+        println "✅ Deployment completed."
+    }
 }
 
 group = 'org.springframework'
