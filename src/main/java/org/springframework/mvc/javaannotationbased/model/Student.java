@@ -1,4 +1,4 @@
-package org.springframework.mvc.basic.model;
+package org.springframework.mvc.javaannotationbased.model;
 
 
 public class Student {

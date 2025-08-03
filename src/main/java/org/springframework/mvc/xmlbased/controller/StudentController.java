@@ -1,14 +1,11 @@
-package org.springframework.mvc.basic.controller;
+package org.springframework.mvc.xmlbased.controller;
 
-import org.springframework.mvc.basic.model.Student;
+import org.springframework.mvc.xmlbased.model.Student;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
