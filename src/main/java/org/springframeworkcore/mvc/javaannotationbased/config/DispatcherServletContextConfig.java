@@ -8,7 +8,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "org.springframeworkcore.mvc.javaannotationbased.controller")
+@ComponentScan(basePackages = "org.springframeworkcore.mvc.javaannotationbased")
 public class DispatcherServletContextConfig {
 
     @Bean

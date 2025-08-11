@@ -60,13 +60,13 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     //for sprinf core IOC & DI
-    implementation 'org.springframework:spring-context:7.0.0-M6'
+    implementation 'org.springframework:spring-context:6.1.4'
 
     //for predestroy and postinit spring bean annotations from java
     implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
 
     //Spring ascpect aop
-    implementation 'org.springframework:spring-aop:7.0.0-M6'
+    implementation 'org.springframework:spring-aop:6.2.1'
 
     //aspectWeaver
     implementation 'org.aspectj:aspectjweaver:1.9.24'
@@ -80,11 +80,15 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.25.0'
 
     //spring mvc
-    implementation 'org.springframework:spring-webmvc:7.0.0-M7'
+    implementation 'org.springframework:spring-webmvc:6.1.4'
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
     implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.2'
 
+
     //spring data
+
+
+
     implementation 'org.springframework:spring-orm:6.1.4'
     implementation 'org.springframework.data:spring-data-jpa:3.2.4'
 
@@ -93,6 +97,8 @@ dependencies {
 
     implementation 'mysql:mysql-connector-java:8.0.33'
     implementation 'com.zaxxer:HikariCP:5.1.0'
+
+
 
 
 }

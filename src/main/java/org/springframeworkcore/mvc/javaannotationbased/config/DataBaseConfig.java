@@ -15,17 +15,21 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan(basePackages = "org.springframeworkcore.mvc.javaannotationbased.implementation")
-@EnableJpaRepositories(basePackages = "org.springframeworkcore.mvc.javaannotationbased.dao")
 @EnableTransactionManagement
+@ComponentScan(basePackages = "org.springframeworkcore.mvc.javaannotationbased")
+@EnableJpaRepositories(basePackages = "org.springframeworkcore.mvc.javaannotationbased.dao")
 public class DataBaseConfig {
     @Bean
     public  DataSource dataSource() {
         HikariDataSource ds = new HikariDataSource();
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        ds.setJdbcUrl("jdbc:mysql://localhost:3306/testdb?useSSL=false");
+        ds.setJdbcUrl("jdbc:mysql://localhost:3306/spring_framework_core?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC");
         ds.setUsername("root");
-        ds.setPassword(System.getProperty("mysql_password"));
+        String dbPassword = System.getenv("MYSQL_DB_PASSWORD");
+        if (dbPassword == null) {
+            throw new IllegalStateException("Environment variable MYSQL_DB_PASSWORD is not set");
+        }
+        ds.setPassword(dbPassword);
         return ds;
     }
 
@@ -44,6 +48,7 @@ public class DataBaseConfig {
         props.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         props.put("hibernate.hbm2ddl.auto", "update");
         props.put("hibernate.show_sql", "true");
+        props.put("hibernate.format_sql", "true");
         return props;
     }
 

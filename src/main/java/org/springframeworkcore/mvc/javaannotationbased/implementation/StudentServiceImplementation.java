@@ -1,5 +1,6 @@
 package org.springframeworkcore.mvc.javaannotationbased.implementation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,13 +11,14 @@ import org.springframeworkcore.mvc.javaannotationbased.service.StudentService;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+
 @Service
 @Transactional
 public class StudentServiceImplementation implements StudentService {
 
     private final StudentRepository studentRepository;
 
+    @Autowired
     public StudentServiceImplementation(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }

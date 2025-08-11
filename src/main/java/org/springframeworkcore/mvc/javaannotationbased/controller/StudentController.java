@@ -6,15 +6,16 @@ import org.springframeworkcore.mvc.javaannotationbased.model.Student;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframeworkcore.mvc.javaannotationbased.service.StudentService;
 
 @Controller
 @RequestMapping(value = "/student")
 public class StudentController {
-    StudentServiceImplementation studentServiceImplementation;
+    StudentService studentService;
 
     @Autowired
-    public StudentController(StudentServiceImplementation studentServiceImplementation){
-        this.studentServiceImplementation = studentServiceImplementation;
+    public StudentController(StudentService studentService){
+        this.studentService = studentService;
     }
 
     @GetMapping("")
@@ -24,7 +25,7 @@ public class StudentController {
 
     @PostMapping("/auth")
     public String studentAuthPage(@ModelAttribute Student student){
-        if(student==null || student.getUsername().isEmpty() || student.getPassword().isEmpty() || student.getPassword().length()<4 || studentServiceImplementation.findByUsername(student.getUsername()).isPresent() || !studentServiceImplementation.findByUsername(student.getUsername()).get().getPassword().equals(student.getPassword())){
+        if(student==null || student.getUsername().isEmpty() || student.getPassword().isEmpty() || student.getPassword().length()<4 || !studentService.findByUsername(student.getUsername()).isPresent() || !studentService.findByUsername(student.getUsername()).get().getPassword().equals(student.getPassword())){
             return "redirect:/student";
         }
         return "redirect:/student/?username="+student.getUsername();
@@ -43,10 +44,10 @@ public class StudentController {
 
     @PostMapping("/newaccount")
     public String studentNewAccount(@ModelAttribute Student student){
-        if(student==null || student.getUsername().isEmpty() || student.getPassword().isEmpty() || student.getPassword().length()<4 || studentServiceImplementation.findByUsername(student.getUsername()).isPresent()){
+        if(student==null || student.getUsername().isEmpty() || student.getPassword().isEmpty() || student.getPassword().length()<4 || studentService.findByUsername(student.getUsername()).isPresent()){
             return "redirect:/student/register";
         }
-        studentServiceImplementation.save(student);
+        studentService.save(student);
         return "studentLoginPage";
     }
 
