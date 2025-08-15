@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframeworkcore.mvc.javaannotationbased.dao.StudentRepository;
+import org.springframeworkcore.mvc.javaannotationbased.dto.request.student.StudentCreateRequestDTO;
+import org.springframeworkcore.mvc.javaannotationbased.dto.response.student.StudentGetResponseDTO;
+import org.springframeworkcore.mvc.javaannotationbased.dtomapper.student.StudentDTOMapper;
 import org.springframeworkcore.mvc.javaannotationbased.model.Student;
 import org.springframeworkcore.mvc.javaannotationbased.service.StudentService;
 
@@ -17,15 +20,26 @@ import java.util.Optional;
 public class StudentServiceImplementation implements StudentService {
 
     private final StudentRepository studentRepository;
+    private final StudentDTOMapper studentDTOMapper;
 
     @Autowired
-    public StudentServiceImplementation(StudentRepository studentRepository) {
+    public StudentServiceImplementation(StudentRepository studentRepository, StudentDTOMapper studentDTOMapper) {
         this.studentRepository = studentRepository;
+        this.studentDTOMapper = studentDTOMapper;
     }
 
     @Override
-    public Student save(Student student) {
-        return studentRepository.save(student);
+    public StudentGetResponseDTO save(StudentCreateRequestDTO studentDTO) throws Exception {
+
+        if(studentRepository.findByUsername(studentDTO.username()).isPresent()){
+            throw new Exception("username already exists!");
+        }
+
+        Student student = studentRepository.save(studentDTOMapper.studentDTOToStudentMapper(studentDTO));
+        if(!student.getUsername().equals(studentDTO.username())){
+            throw new Exception("user not created!");
+        }
+        return studentDTOMapper.studentToStudentDTOMapper(student);
     }
 
     @Override
@@ -34,8 +48,13 @@ public class StudentServiceImplementation implements StudentService {
     }
 
     @Override
-    public Optional<Student> findByUsername(String username) {
-        return studentRepository.findByUsername(username);
+    public StudentGetResponseDTO findByUsername(String username) throws Exception {
+        Optional<Student> studentOptional = studentRepository.findByUsername(username);
+        if(studentOptional.isEmpty()){
+            throw new Exception("");
+        }
+        Student student = studentOptional.get();
+        return studentDTOMapper.studentToStudentDTOMapper(student);
     }
 
 }

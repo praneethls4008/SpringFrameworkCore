@@ -48,6 +48,53 @@ tasks.register("deployToTomcat") {
     }
 }
 
+//def tomcatWebapps = file("C:/Program Files/Apache Software Foundation/Tomcat 11.0_Tomcat8111/webapps")
+//def tomcatBin = file("C:/Program Files/Apache Software Foundation/Tomcat 11.0_Tomcat8111/bin")
+def tomcatPort = 8111  // change if needed
+
+tasks.register("deployToTomcatInIntelliJ") {
+    dependsOn tasks.named("war")
+
+    doLast {
+        println "🔍 Checking for existing Tomcat process on port ${tomcatPort}..."
+        exec {
+            commandLine "powershell", "-Command", """
+                \$tomcatPid = (Get-NetTCPConnection -LocalPort ${tomcatPort} -ErrorAction SilentlyContinue).OwningProcess
+                if (\$tomcatPid) { 
+                    Write-Host 'Stopping process ID:' \$tomcatPid
+                    Stop-Process -Id \$tomcatPid -Force
+                    Start-Sleep -Seconds 2
+                } else {
+                    Write-Host 'No process found on port ${tomcatPort}'
+                }
+            """
+            ignoreExitValue = true
+        }
+
+        def rootWar = file("${tomcatWebapps}/ROOT.war")
+        def rootFolder = file("${tomcatWebapps}/ROOT")
+
+        println "🗑 Deleting old ROOT..."
+        if (rootFolder.exists()) rootFolder.deleteDir()
+        if (rootWar.exists()) rootWar.delete()
+
+        println "📦 Copying new ROOT.war..."
+        copy {
+            from(tasks.named("war").get().archiveFile)
+            into(tomcatWebapps)
+            rename { "ROOT.war" }
+        }
+
+        println "🚀 Starting Tomcat in IntelliJ terminal (Press STOP to shut it down)..."
+        exec {
+            workingDir tomcatBin
+            commandLine "cmd", "/c", "catalina.bat run"
+            standardOutput = System.out
+            errorOutput = System.err
+        }
+    }
+}
+
 group = 'org.springframework'
 version = '1.0-SNAPSHOT'
 

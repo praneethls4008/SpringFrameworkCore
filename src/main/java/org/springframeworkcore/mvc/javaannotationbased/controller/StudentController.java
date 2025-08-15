@@ -1,21 +1,25 @@
 package org.springframeworkcore.mvc.javaannotationbased.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframeworkcore.mvc.javaannotationbased.dto.request.student.StudentCreateRequestDTO;
 import org.springframeworkcore.mvc.javaannotationbased.implementation.StudentServiceImplementation;
 import org.springframeworkcore.mvc.javaannotationbased.model.Student;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframeworkcore.mvc.javaannotationbased.service.AuthService;
 import org.springframeworkcore.mvc.javaannotationbased.service.StudentService;
 
 @Controller
 @RequestMapping(value = "/student")
 public class StudentController {
     StudentService studentService;
+    AuthService authService;
 
     @Autowired
-    public StudentController(StudentService studentService){
+    public StudentController(StudentService studentService, AuthService authService){
         this.studentService = studentService;
+        this.authService = authService;
     }
 
     @GetMapping("")
@@ -24,11 +28,14 @@ public class StudentController {
     }
 
     @PostMapping("/auth")
-    public String studentAuthPage(@ModelAttribute Student student){
-        if(student==null || student.getUsername().isEmpty() || student.getPassword().isEmpty() || student.getPassword().length()<4 || !studentService.findByUsername(student.getUsername()).isPresent() || !studentService.findByUsername(student.getUsername()).get().getPassword().equals(student.getPassword())){
+    public String studentAuthPage(@ModelAttribute StudentCreateRequestDTO studentDTO){
+        try{
+            authService.studentLogin(studentDTO);
+        }catch (Exception authException){
+            authException.printStackTrace();
             return "redirect:/student";
         }
-        return "redirect:/student/?username="+student.getUsername();
+        return "redirect:/student/?username="+studentDTO.username();
 
     }
 
@@ -43,11 +50,13 @@ public class StudentController {
     }
 
     @PostMapping("/newaccount")
-    public String studentNewAccount(@ModelAttribute Student student){
-        if(student==null || student.getUsername().isEmpty() || student.getPassword().isEmpty() || student.getPassword().length()<4 || studentService.findByUsername(student.getUsername()).isPresent()){
+    public String studentNewAccount(@ModelAttribute StudentCreateRequestDTO studentRequestDTO){
+        try{
+            studentService.save(studentRequestDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
             return "redirect:/student/register";
         }
-        studentService.save(student);
         return "studentLoginPage";
     }
 
