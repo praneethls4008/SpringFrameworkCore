@@ -1,9 +1,7 @@
 package org.springframeworkcore.mvc.javaannotationbased.model;
 
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-
 @Entity
 @Table(name = "student")
 public class Student {
@@ -41,4 +39,5 @@ public class Student {
     public void setUsername(String username) {
         this.username = username;
     }
+
 }

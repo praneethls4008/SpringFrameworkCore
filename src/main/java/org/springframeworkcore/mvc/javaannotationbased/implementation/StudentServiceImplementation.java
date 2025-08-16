@@ -1,7 +1,6 @@
 package org.springframeworkcore.mvc.javaannotationbased.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframeworkcore.mvc.javaannotationbased.dao.StudentRepository;
@@ -50,8 +49,8 @@ public class StudentServiceImplementation implements StudentService {
     @Override
     public StudentGetResponseDTO findByUsername(String username) throws Exception {
         Optional<Student> studentOptional = studentRepository.findByUsername(username);
-        if(studentOptional.isEmpty()){
-            throw new Exception("");
+        if(!studentOptional.isPresent()){
+            throw new Exception("Username not found");
         }
         Student student = studentOptional.get();
         return studentDTOMapper.studentToStudentDTOMapper(student);
