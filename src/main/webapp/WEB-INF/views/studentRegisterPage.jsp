@@ -19,7 +19,7 @@
                     <div class="global-error">${loginError}</div>
                 </c:if>
 
-	<form:form action="/student/newaccount" method="POST" modelAttribute="studentCreateRequestDTO">
+	<form:form action="${pageContext.request.contextPath}/student/newaccount" method="POST" modelAttribute="studentCreateRequestDTO">
        <div>
                   <form:label path="username">Username</form:label>
                   <form:input path="username" placeholder="Enter New username"/>

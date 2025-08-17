@@ -7,6 +7,11 @@
 	    <div>
 	    <h2>Welcome ${username}</h2>
 	    </div>
+		<div>
+			<button > 
+				<a href="${pageContext.request.contextPath}/student/logout?username=${username}"> logout </a>	
+			 </button>	
+		</div>
     </div>
   </body>
 </html>

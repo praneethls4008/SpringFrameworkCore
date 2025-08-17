@@ -21,7 +21,7 @@
             <div class="global-error">${loginError}</div>
         </c:if>
 
-    <form:form action="/student/auth" method="POST" modelAttribute="studentCreateRequestDTO">
+    <form:form action="${pageContext.request.contextPath}/student/auth" method="POST" modelAttribute="studentLoginRequestDTO">
 
         <div>
             <form:label path="username">Username</form:label>
@@ -34,6 +34,11 @@
             <form:password path="password" placeholder="enter password"/>
             <form:errors path="password" cssClass="error"/>
         </div>
+		
+		<div>
+			<form:checkbox path="rememberMe" label="Remember me"/>
+			<form:errors path="rememberMe" cssClass="error"/>
+		</div>
 
         <div>
             <input type="submit" value="Login"/>

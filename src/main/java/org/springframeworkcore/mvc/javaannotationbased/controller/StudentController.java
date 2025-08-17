@@ -1,97 +1,128 @@
 package org.springframeworkcore.mvc.javaannotationbased.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframeworkcore.mvc.javaannotationbased.dto.request.student.StudentCreateRequestDTO;
-import org.springframeworkcore.mvc.javaannotationbased.implementation.StudentServiceImplementation;
-import org.springframeworkcore.mvc.javaannotationbased.model.Student;
+import org.springframeworkcore.mvc.javaannotationbased.dto.request.student.StudentLoginRequestDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframeworkcore.mvc.javaannotationbased.service.AuthService;
 import org.springframeworkcore.mvc.javaannotationbased.service.StudentService;
+import org.springframeworkcore.mvc.javaannotationbased.templates.cookies.UserSession;
+import org.springframeworkcore.mvc.javaannotationbased.utils.CookieServiceUtil;
 
 @Controller
 @RequestMapping(value = "/student")
 public class StudentController {
-    StudentService studentService;
-    AuthService authService;
+	StudentService studentService;
+	AuthService authService;
 
-    @Autowired
-    public StudentController(StudentService studentService, AuthService authService){
-        this.studentService = studentService;
-        this.authService = authService;
-    }
+	@Autowired
+	public StudentController(StudentService studentService, AuthService authService) {
+		this.studentService = studentService;
+		this.authService = authService;
+	}
 
-    @InitBinder
-    public void initBinder(WebDataBinder webDataBinder){
-        System.out.println(webDataBinder.toString());
-    }
+	@InitBinder
+	public void initBinder(WebDataBinder webDataBinder) {
+//        System.out.println("bind");
+	}
 
-    @GetMapping("")
-    public String studentLoginPage(Model model){
+	@GetMapping("/login")
+	public String studentLoginPage(@CookieValue(value = "userSession", required = false) String userSession,
+			Model model) {
 
-        if (!model.containsAttribute("studentCreateRequestDTO")) {
-            // supply an empty form-backing object
-            model.addAttribute("studentCreateRequestDTO",
-                    new StudentCreateRequestDTO("", ""));
-        }
-        return "studentLoginPage";
-    }
+		if (userSession == null) {
+			if (!model.containsAttribute("studentLoginRequestDTO")) {
+				model.addAttribute("studentLoginRequestDTO", new StudentLoginRequestDTO("", "", false));
+			}
+			return "studentLoginPage";
+		}
 
-    @PostMapping("/auth")
-    public String studentAuthPage(@Valid @ModelAttribute StudentCreateRequestDTO studentDTO, BindingResult bindingResult, Model model){
+		try {
+			UserSession userSessionObj = CookieServiceUtil.cookieToObject(userSession, UserSession.class);
+			model.addAttribute("studentLoginRequestDTO", new StudentLoginRequestDTO(userSessionObj.username(), "", false));
 
+			if (userSessionObj.rememberMe()) {
+				return "redirect:/student/dashboard/?username=" + userSessionObj.username();
+			} else {
+				return "studentLoginPage";
+			}
+		} catch (Exception e) {
+			return "studentLoginPage";
+		}
 
-        if(bindingResult.hasErrors()){
+	}
+
+	@PostMapping("/auth")
+	public String studentAuthPage(@Valid @ModelAttribute StudentLoginRequestDTO studentLoginReqDTO,
+			BindingResult bindingResult, Model model,
+			HttpServletResponse httpResponse) {
+
+		if (bindingResult.hasErrors()) {
 //            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "studentLoginPage";
-        }
+			return "studentLoginPage";
+		}
 
-        try{
-            authService.studentLogin(studentDTO);
-        }catch (Exception authException){
-            model.addAttribute("loginError", authException.getMessage());
-            authException.printStackTrace();
-            return "studentLoginPage";
-        }
-        return "redirect:/student/?username="+studentDTO.username();
+		try {
+			authService.studentLogin(studentLoginReqDTO);
+		} catch (Exception authException) {
+			model.addAttribute("loginError", authException.getMessage());
+			authException.printStackTrace();
+			return "studentLoginPage";
+		}
+		
+		try {
+			CookieServiceUtil.add(httpResponse, "userSession", new UserSession(studentLoginReqDTO.username(), studentLoginReqDTO.rememberMe()), 2 * 60);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/student/dashboard/?username=" + studentLoginReqDTO.username();
 
-    }
+	}
 
-    @GetMapping("/")
-    public ModelAndView studentDashBoardPage(@RequestParam("username") String username){
-        return new ModelAndView("studentDashboardPage", "username", username);
-    }
+	@GetMapping("/dashboard/")
+	public ModelAndView studentDashBoardPage(@RequestParam("username") String username) {
+		return new ModelAndView("studentDashboardPage", "username", username);
+	}
 
-    @GetMapping("/register")
-    public String studentRegisterPage(Model model){
-        if (!model.containsAttribute("studentCreateRequestDTO")) {
-            model.addAttribute("studentCreateRequestDTO",
-                    new StudentCreateRequestDTO("", ""));
-        }
-        return "studentRegisterPage";
-    }
+	@GetMapping("/register")
+	public String studentRegisterPage(Model model) {
+		if (!model.containsAttribute("studentCreateRequestDTO")) {
+			model.addAttribute("studentCreateRequestDTO", new StudentCreateRequestDTO("", ""));
+		}
+		return "studentRegisterPage";
+	}
 
-    @PostMapping("/newaccount")
-    public String studentNewAccount(@Valid @ModelAttribute StudentCreateRequestDTO studentRequestDTO, BindingResult bindingResult, Model model){
-        if(bindingResult.hasErrors()){
-            return "studentRegisterPage";
-        }
-        try{
-            studentService.save(studentRequestDTO);
-        } catch (Exception e) {
-            model.addAttribute("loginError", e.getMessage());
-            e.printStackTrace();
-            return "studentRegisterPage";
-        }
-        return "studentLoginPage";
-    }
-
-
+	@PostMapping("/newaccount")
+	public String studentNewAccount(@Valid @ModelAttribute StudentCreateRequestDTO studentRequestDTO,
+			BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			return "studentRegisterPage";
+		}
+		try {
+			studentService.save(studentRequestDTO);
+		} catch (Exception e) {
+			model.addAttribute("loginError", e.getMessage());
+			e.printStackTrace();
+			return "studentRegisterPage";
+		}
+		return "studentLoginPage";
+	}
+	
+	@GetMapping("/logout")
+	public String studentLogout(@CookieValue(value = "userSession", required = false) String userSession, @RequestParam("username") String username,Model model, HttpServletResponse httpResponse) {
+		if(userSession!=null) {
+			CookieServiceUtil.delete(httpResponse, "userSession");
+		}
+		return "redirect:/student/login";
+	}
 
 }
