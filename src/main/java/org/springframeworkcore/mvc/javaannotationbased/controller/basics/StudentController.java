@@ -1,8 +1,12 @@
-package org.springframeworkcore.mvc.javaannotationbased.controller;
+package org.springframeworkcore.mvc.javaannotationbased.controller.basics;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,11 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframeworkcore.mvc.javaannotationbased.service.AuthService;
 import org.springframeworkcore.mvc.javaannotationbased.service.StudentService;
-import org.springframeworkcore.mvc.javaannotationbased.templates.cookies.UserSession;
+import org.springframeworkcore.mvc.javaannotationbased.session.model.UserSession;
 import org.springframeworkcore.mvc.javaannotationbased.utils.CookieServiceUtil;
 
 @Controller
 @RequestMapping(value = "/student")
+@SessionAttributes("userSession")//session attributes will be pushed to request scope
 public class StudentController {
 	StudentService studentService;
 	AuthService authService;
@@ -37,8 +42,8 @@ public class StudentController {
 	@GetMapping("/login")
 	public String studentLoginPage(@CookieValue(value = "userSession", required = false) String userSession,
 			Model model) {
-
 		if (userSession == null) {
+			
 			if (!model.containsAttribute("studentLoginRequestDTO")) {
 				model.addAttribute("studentLoginRequestDTO", new StudentLoginRequestDTO("", "", false));
 			}
@@ -114,7 +119,7 @@ public class StudentController {
 			e.printStackTrace();
 			return "studentRegisterPage";
 		}
-		return "studentLoginPage";
+		return "redirect:/student/login";
 	}
 	
 	@GetMapping("/logout")

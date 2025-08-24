@@ -149,6 +149,7 @@ dependencies {
 	//obj to string via json & string to obj via json 
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0-rc1")
 
+	implementation("redis.clients:jedis:6.1.0")
 }
 
 test {
