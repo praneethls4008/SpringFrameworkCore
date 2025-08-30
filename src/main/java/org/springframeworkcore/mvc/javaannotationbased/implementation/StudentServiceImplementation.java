@@ -28,6 +28,7 @@ public class StudentServiceImplementation implements StudentService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public StudentGetResponseDTO save(StudentCreateRequestDTO studentDTO) throws Exception {
 
         if(studentRepository.findByUsername(studentDTO.username()).isPresent()){
@@ -42,11 +43,13 @@ public class StudentServiceImplementation implements StudentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public StudentGetResponseDTO findByUsername(String username) throws Exception {
         Optional<Student> studentOptional = studentRepository.findByUsername(username);
         if(!studentOptional.isPresent()){

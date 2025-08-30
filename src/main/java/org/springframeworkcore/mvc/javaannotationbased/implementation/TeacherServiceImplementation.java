@@ -29,6 +29,7 @@ public class TeacherServiceImplementation implements TeacherService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public TeacherGetResponseDTO save(TeacherCreateRequestDTO teacherDTO) throws Exception {
 
         if(teacherRepository.findByUsername(teacherDTO.username()).isPresent()){
@@ -43,11 +44,13 @@ public class TeacherServiceImplementation implements TeacherService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Teacher> getAllTeachers() {
         return teacherRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TeacherGetResponseDTO findByUsername(String username) throws Exception {
         Optional<Teacher> teacherOptional = teacherRepository.findByUsername(username);
         if(!teacherOptional.isPresent()){
