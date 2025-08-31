@@ -7,6 +7,7 @@ import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframeworkcore.jdbc.dao.repo.SQLFunction;
 import org.springframeworkcore.jdbc.dao.repo.StudentDAO;
 import org.springframeworkcore.jdbc.model.Student;
@@ -47,7 +48,11 @@ public class StudentServiceImpl implements StudentService{
 	@Override
 	public void saveAll(List<Student> studentList) {
 		studentDao.saveAll(studentList);
-		
+	}
+	
+	@Override
+	public void cleanTable() {
+		studentDao.cleanTable();
 	}
 
 	@Override
@@ -59,6 +64,17 @@ public class StudentServiceImpl implements StudentService{
 	public <K, V> Map<K, List<V>> groupBy(SQLFunction<ResultSet, K> keyExtractor, SQLFunction<ResultSet, V> valueExtractor){
 		return studentDao.groupBy(keyExtractor, valueExtractor);
 	}
+	
+	@Override
+	public List<Student> transaction(List<Student> studentList, int id) {
+		try {
+			studentDao.saveMany(studentList, id);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return studentDao.getAll();
+	}
+	
 
 	
 	

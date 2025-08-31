@@ -16,5 +16,7 @@ public interface StudentDAO {
 	List<Student> getAll();
 	Map<Integer, List<String>> groupByStudentAge();
 	<K, V> Map<K, List<V>> groupBy(SQLFunction<ResultSet, K> keyExtractor,SQLFunction<ResultSet, V> valueExtractor);
+	void saveMany(List<Student> studentList, int id);
+	void cleanTable();
 	
 }

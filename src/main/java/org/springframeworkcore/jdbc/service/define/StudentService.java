@@ -16,4 +16,7 @@ public interface StudentService {
 	List<Student> getAll();
 	Map<Integer, List<String>> groupByStudentAge();
 	<K, V> Map<K, List<V>> groupBy(SQLFunction<ResultSet, K> keyExtractor, SQLFunction<ResultSet, V> valueExtractor);
+	List<Student> transaction(List<Student> studentList, int id);
+	void cleanTable();
+	
 }
