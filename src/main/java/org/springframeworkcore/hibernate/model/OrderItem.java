@@ -1,4 +1,4 @@
-package org.springframeworkcore.jdbc.model;
+package org.springframeworkcore.hibernate.model;
 
 public class OrderItem {
 	private int id;

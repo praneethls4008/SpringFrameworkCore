@@ -1,4 +1,4 @@
-package org.springframeworkcore.jdbc.model;
+package org.springframeworkcore.hibernate.model;
 
 import java.util.Date;
 

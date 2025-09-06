@@ -24,7 +24,7 @@ public class mainApp {
 //		  Student student2 = new Student(); student2.setName("rand2");
 //		  student2.setAge(17);
 //		  
-//		  Student student3 = new Student(); student3.setName("rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3");
+//		  Student student3 = new Student(); student3.setName("random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3");
 //		  student3.setAge(15);
 //		  
 //		  
@@ -52,7 +52,7 @@ public class mainApp {
 		  student2.setAge(17);
 		  
 		  String name = "hello";
-//		  name = "rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3rand3";
+//		  name = "random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3random3";
 		  Student student3 = new Student(); student3.setName(name);
 		  student3.setAge(15);
 		 

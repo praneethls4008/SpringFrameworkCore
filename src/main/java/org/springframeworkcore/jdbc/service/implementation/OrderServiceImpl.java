@@ -46,6 +46,7 @@ public class OrderServiceImpl implements OrderService{
         item.setQuantity(quantity);
         item.setPrice(product.getPrice());
         orderDao.saveOrderItem(item);
+        
         productDao.updateStock(productId, product.getStock() - quantity);
 		
 	}
@@ -54,5 +55,7 @@ public class OrderServiceImpl implements OrderService{
 	public List<Order> getCustomerOrders(int customerId) {
 		return orderDao.findByCustomerId(customerId);
 	}
+	
+	
 
 }

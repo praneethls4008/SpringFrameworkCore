@@ -1,6 +1,13 @@
-package org.springframeworkcore.jdbc.model;
+package org.springframeworkcore.hibernate.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "Customer")
 public class Customer {
+	@Id
 	private int id;
     private String name;
     private String email;
