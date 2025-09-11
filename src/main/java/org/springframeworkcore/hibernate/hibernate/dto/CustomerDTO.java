@@ -34,6 +34,12 @@ public class CustomerDTO {
 			if(newCustomer.getEmail()==null) {
 				newCustomer.setEmail(oldCustomer.getEmail());
 			}
+			
+			if(newCustomer.getProfilePicture()==null) {
+				newCustomer.setProfilePicture(oldCustomer.getProfilePicture());
+			}
+			
+			
 			session.merge(newCustomer);
 		});
 	}
