@@ -7,6 +7,9 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.springframeworkcore.hibernate.hibernate.concepts.embedable.ClassA;
 import org.springframeworkcore.hibernate.hibernate.concepts.embedable.ClassB;
+import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.Address;
+import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.Passport;
+import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.Person;
 import org.springframeworkcore.hibernate.hibernate.entities.Customer;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -38,7 +41,8 @@ public class SessionFactoryUtil {
         properties = new Properties();
         properties.put(Environment.DATASOURCE, dataSource);
         properties.put(Environment.SHOW_SQL, "true");
-        properties.put(Environment.HBM2DDL_AUTO, "update");
+        properties.put(Environment.HBM2DDL_AUTO, "create");
+//        properties.put(Environment.HBM2DDL_AUTO, "update");
 //        properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
 
         // Build SessionFactory
@@ -59,6 +63,9 @@ public class SessionFactoryUtil {
             cfg.setProperties(properties);
             cfg.addAnnotatedClass(ClassA.class);
             cfg.addAnnotatedClass(ClassB.class);
+            cfg.addAnnotatedClass(Passport.class);
+            cfg.addAnnotatedClass(Address.class);
+//            cfg.addAnnotatedClass(Person.class);
 
             System.out.println("Building new SessionFactory...");
             sessionFactory = cfg.buildSessionFactory();
