@@ -7,10 +7,12 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.springframeworkcore.hibernate.hibernate.concepts.embedable.ClassA;
 import org.springframeworkcore.hibernate.hibernate.concepts.embedable.ClassB;
-import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.Address;
-import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.Passport;
+import org.springframeworkcore.hibernate.hibernate.concepts.relationships.manytomany.Customer;
+import org.springframeworkcore.hibernate.hibernate.concepts.relationships.manytomany.TravelPackage;
+import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetomany.Address;
+import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetomany.Passport;
+import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.PassportForPerson;
 import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.Person;
-import org.springframeworkcore.hibernate.hibernate.entities.Customer;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -65,7 +67,10 @@ public class SessionFactoryUtil {
             cfg.addAnnotatedClass(ClassB.class);
             cfg.addAnnotatedClass(Passport.class);
             cfg.addAnnotatedClass(Address.class);
-//            cfg.addAnnotatedClass(Person.class);
+            cfg.addAnnotatedClass(PassportForPerson.class);
+            cfg.addAnnotatedClass(Person.class);
+            cfg.addAnnotatedClass(TravelPackage.class);
+            cfg.addAnnotatedClass(Customer.class);
 
             System.out.println("Building new SessionFactory...");
             sessionFactory = cfg.buildSessionFactory();

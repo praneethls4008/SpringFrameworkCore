@@ -1,5 +1,6 @@
 package org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone;
 
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -15,7 +16,7 @@ public class Person {
 	private String name;
 	
 	@OneToOne(orphanRemoval = true)
-	private Passport passport;
+	private PassportForPerson passport;
 
 	public int getId() {
 		return id;
@@ -33,11 +34,11 @@ public class Person {
 		this.name = name;
 	}
 
-	public Passport getPassport() {
+	public PassportForPerson getPassport() {
 		return passport;
 	}
 
-	public void setPassport(Passport passport) {
+	public void setPassport(PassportForPerson passport) {
 		this.passport = passport;
 	}
 

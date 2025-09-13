@@ -1,4 +1,4 @@
-package org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone;
+package org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetomany;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,12 @@ public class Address {
     @NotBlank
     private String state;
     
+    //cascade is to delete children(List<Passport>) when parent(address) is delete
+    //cascade is only parent -> child operation 
+    //orphanremoval will delete if children(List<Passport>) removed deleted from passport table to
+    //also deletes children(List<Passport>) from passport table if pointing to null address
+    //but orphan removal alone cant nullify on parent removal, works on child only
+    //orphan is both parent to child and child operation
     @OneToMany(mappedBy = "address",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Passport> passports = new ArrayList<>(); 
 

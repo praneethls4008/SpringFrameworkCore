@@ -4,12 +4,11 @@ import java.util.Date;
 
 import org.springframeworkcore.hibernate.hibernate.concepts.helper.PrintToScreenHelper;
 import org.springframeworkcore.hibernate.hibernate.concepts.helper.TransactionManagement;
-import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.Address;
-import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.Passport;
+import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.PassportForPerson;
 import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.Person;
 
 public class PersonService {
-	public static void add(String name, Passport passport ) {
+	public static void add(String name, PassportForPerson passport ) {
 		Person personObj = new Person();
 		personObj.setName(name);
 		personObj.setPassport(passport);

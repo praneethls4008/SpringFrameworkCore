@@ -1,4 +1,4 @@
-package org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone;
+package org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetomany;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;

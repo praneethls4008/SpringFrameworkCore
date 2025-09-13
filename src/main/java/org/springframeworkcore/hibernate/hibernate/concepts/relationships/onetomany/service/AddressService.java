@@ -1,9 +1,9 @@
-package org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.service;
+package org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetomany.service;
 
 import org.springframeworkcore.hibernate.hibernate.concepts.helper.PrintToScreenHelper;
 import org.springframeworkcore.hibernate.hibernate.concepts.helper.TransactionManagement;
-import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.Address;
-import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoone.Passport;
+import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetomany.Address;
+import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetomany.Passport;
 
 public class AddressService {
 
