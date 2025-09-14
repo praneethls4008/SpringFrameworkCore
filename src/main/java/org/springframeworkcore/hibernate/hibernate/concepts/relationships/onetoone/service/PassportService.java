@@ -9,14 +9,14 @@ import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoo
 public class PassportService {
 
 	public static void add(int passportNo, int age, int year) {
-		PassportForPerson passportObj = new PassportForPerson();
-		passportObj.setNumber(passportNo);
-		passportObj.setAge(age);
-		Date date = new Date();
-		date.setYear(year);
-		date.setMonth(1);
-		passportObj.setExpiryDate(date);
 		TransactionManagement.doInTransactionConsumer(session -> {
+			PassportForPerson passportObj = new PassportForPerson();
+			passportObj.setNumber(passportNo);
+			passportObj.setAge(age);
+			Date date = new Date();
+			date.setYear(year);
+			date.setMonth(1);
+			passportObj.setExpiryDate(date);
 			session.persist(passportObj);
 		});
 		
@@ -24,7 +24,9 @@ public class PassportService {
 	}
 	
 	public static void printAll() {
-		PrintToScreenHelper.print("Passport: "+TransactionManagement.doInTransactionFunction(session -> session.createQuery("from PassportForPerson", PassportForPerson.class).list()));
+		TransactionManagement.doInTransactionConsumer(session -> {
+			PrintToScreenHelper.print("Passport: "+ session.createQuery("from PassportForPerson", PassportForPerson.class).list());
+		});
 	}
 	
 	public static PassportForPerson get(int passportNo) {
@@ -32,8 +34,10 @@ public class PassportService {
 	}
 	
 	public static void delete(int passportNo) {
-		PassportForPerson passport = TransactionManagement.doInTransactionFunction(session -> session.get(PassportForPerson.class, passportNo));
-		TransactionManagement.doInTransactionConsumer(session -> session.remove(passport));
+		TransactionManagement.doInTransactionConsumer(session -> {
+			PassportForPerson passport = session.get(PassportForPerson.class, passportNo);
+			session.remove(passport);
+		});
 		}
 	
 	

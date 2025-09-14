@@ -10,36 +10,46 @@ import org.springframeworkcore.hibernate.hibernate.concepts.relationships.manyto
 public class TravelPackageService {
 
 	public static void add(String name, double price) {
-		TravelPackage travelPackage = new TravelPackage();
-		travelPackage.setName(name);
-		travelPackage.setPrice(price);
 		TransactionManagement.doInTransactionConsumer(session -> {
+			TravelPackage travelPackage = new TravelPackage();
+			travelPackage.setName(name);
+			travelPackage.setPrice(price);
 			session.persist(travelPackage);
 		});
 	}
 	
-	public static void addToCustomers(int travelPackageId, Customer customer) {
-		
-		TravelPackage travelPackage = get(travelPackageId);
-		travelPackage.addToCustomers(customer);
-		
+	public static void addToCustomers(int travelPackageId, int customerId) {
+
 		TransactionManagement.doInTransactionConsumer(session -> {
+			TravelPackage travelPackage = session.get(TravelPackage.class, travelPackageId);
+			Customer customer = session.get(Customer.class, customerId);
+			
+			customer.addToTravelPackage(travelPackage);
+			travelPackage.addToCustomers(customer);
+			
 			session.merge(travelPackage);
+			session.persist(customer);
 		});
 	}
 	
-	public static void removeFromCustomers(int travelPackageId, Customer customer) {
-		
-		TravelPackage travelPackage = get(travelPackageId);
-		travelPackage.removeFromCustomers(customer);
-		
+	public static void removeFromCustomers(int travelPackageId, int customerId) {
 		TransactionManagement.doInTransactionConsumer(session -> {
+			TravelPackage travelPackage = session.get(TravelPackage.class, travelPackageId);
+			Customer customer = session.get(Customer.class, customerId);
+			
+			customer.removeFromTravelPackage(travelPackage);
+			travelPackage.removeFromCustomers(customer);
+			
 			session.merge(travelPackage);
+			session.persist(customer);
 		});
 	}
 	
 	public static void printAll() {
-		PrintToScreenHelper.print("TravelPackage: "+TransactionManagement.doInTransactionFunction(session -> session.createQuery("from TravelPackage", TravelPackage.class).list()));
+		TransactionManagement.doInTransactionConsumer(session -> {
+			List<TravelPackage> travelPackage = session.createQuery("from TravelPackage", TravelPackage.class).list();
+			PrintToScreenHelper.print("TravelPackage: "+ travelPackage);
+		});
 	}
 	
 	public static TravelPackage get(int travelPackageId) {
@@ -47,8 +57,10 @@ public class TravelPackageService {
 	}
 	
 	public static void delete(int travelPackageId) {
-		TravelPackage travelPackage = TransactionManagement.doInTransactionFunction(session -> session.get(TravelPackage.class, travelPackageId));
-		TransactionManagement.doInTransactionConsumer(session -> session.remove(travelPackage));
+		TransactionManagement.doInTransactionConsumer(session ->{ 
+			TravelPackage travelPackage = session.get(TravelPackage.class, travelPackageId);
+			session.remove(travelPackage);
+		});
 	}
 	
 	

@@ -10,39 +10,44 @@ import org.springframeworkcore.hibernate.hibernate.concepts.relationships.manyto
 public class CustomerService {
 
 	public static void add(String name) {
-		Customer customer = new Customer();
-		customer.setName(name);
 		TransactionManagement.doInTransactionConsumer(session -> {
+			Customer customer = new Customer();
+			customer.setName(name);
 			session.persist(customer);
 		});
 	}
 	
 	public static void addToTravelPackages(int customerId, int travelPackageId) {
-		
-		Customer customer = get(customerId);
-		TravelPackage travelPackage = TravelPackageService.get(travelPackageId);
-		
-		customer.addToTravelPackage(travelPackage);
-		
 		TransactionManagement.doInTransactionConsumer(session -> {
+			Customer customer = session.get(Customer.class, customerId);
+			TravelPackage travelPackage = session.get(TravelPackage.class, travelPackageId);
+			
+			travelPackage.addToCustomers(customer);
+			customer.addToTravelPackage(travelPackage);
+			
 			session.merge(customer);
+			session.merge(travelPackage);
 		});
 	}
 	
 	public static void removeFromTravelPackages(int customerId, int travelPackageId) {
-		
-		Customer customer = get(customerId);
-		TravelPackage travelPackage = TravelPackageService.get(travelPackageId);
-		
-		customer.removeFromTravelPackage(travelPackage);
-		
 		TransactionManagement.doInTransactionConsumer(session -> {
+			Customer customer = session.get(Customer.class, customerId);
+			TravelPackage travelPackage = session.get(TravelPackage.class, travelPackageId);
+			
+			travelPackage.removeFromCustomers(customer);
+			customer.removeFromTravelPackage(travelPackage);
+			
 			session.merge(customer);
+			session.merge(travelPackage);
 		});
 	}
 	
 	public static void printAll() {
-		PrintToScreenHelper.print("Customer: "+TransactionManagement.doInTransactionFunction(session -> session.createQuery("from Customer", Customer.class).list()));
+		TransactionManagement.doInTransactionConsumer(session -> {
+			List<Customer> customer = session.createQuery("from Customer", Customer.class).list();
+			PrintToScreenHelper.print("Customer: "+ customer);
+		});
 	}
 	
 	public static Customer get(int customerId) {
@@ -50,8 +55,10 @@ public class CustomerService {
 	}
 	
 	public static void delete(int customerId) {
-		Customer customer = TransactionManagement.doInTransactionFunction(session -> session.get(Customer.class, customerId));
-		TransactionManagement.doInTransactionConsumer(session -> session.remove(customer));
+		TransactionManagement.doInTransactionConsumer(session -> {
+			Customer customer = session.get(Customer.class, customerId);
+			session.remove(customer);
+		});
 	}
 	
 	

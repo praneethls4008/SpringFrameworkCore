@@ -31,7 +31,7 @@ public class SessionFactoryUtil {
 
         // Configure HikariCP
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/spring_framework_core?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC");
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/hibernate_concepts?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC");
         config.setUsername("root");
         config.setPassword(dbPassword);
         config.setMaximumPoolSize(10);

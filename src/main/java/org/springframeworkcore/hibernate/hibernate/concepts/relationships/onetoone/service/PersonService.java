@@ -9,19 +9,25 @@ import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoo
 
 public class PersonService {
 	public static void add(String name, PassportForPerson passport ) {
-		Person personObj = new Person();
-		personObj.setName(name);
-		personObj.setPassport(passport);
-		TransactionManagement.doInTransactionConsumer(session -> session.persist(personObj));
+		TransactionManagement.doInTransactionConsumer(session -> {
+			Person personObj = new Person();
+			personObj.setName(name);
+			personObj.setPassport(passport);
+			session.persist(personObj);
+			});
 	}
 	
 	public static void printAll() {
 		
-		PrintToScreenHelper.print("Person: "+TransactionManagement.doInTransactionFunction(session -> session.createQuery("from Person", Person.class).list()));
+		TransactionManagement.doInTransactionConsumer(session -> {
+			PrintToScreenHelper.print("Person: "+ session.createQuery("from Person", Person.class).list());
+		});
 	}
 	
 	public static void delete(int personId) {
-		Person person = TransactionManagement.doInTransactionFunction(session -> session.get(Person.class, personId));
-		TransactionManagement.doInTransactionConsumer(session -> session.remove(person));
+		TransactionManagement.doInTransactionConsumer(session -> {
+			Person person = session.get(Person.class, personId);
+			session.remove(person);
+			});
 		}
 }

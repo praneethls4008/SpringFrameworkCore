@@ -2,7 +2,6 @@ package org.springframeworkcore.hibernate.hibernate.concepts.relationships.manyt
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,7 +21,7 @@ public class Customer {
 	@Column(nullable=false)
 	private String name;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany//(fetch = FetchType.EAGER)
 	private List<TravelPackage> travelPackages;
 	
 	

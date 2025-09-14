@@ -8,16 +8,20 @@ import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetom
 public class AddressService {
 
 	public static void add(String country, String state, int zip) {
-		Address address = new Address();
-		address.setCountry(country);
-		address.setState(state);
-		address.setZip(zip);
-		TransactionManagement.doInTransactionConsumer(session -> session.persist(address));
+		TransactionManagement.doInTransactionConsumer(session -> {
+			Address address = new Address();
+			address.setCountry(country);
+			address.setState(state);
+			address.setZip(zip);
+			session.persist(address);
+		});
 	}
 	
 	public static void delete(int zip) {
-		Address address = TransactionManagement.doInTransactionFunction(session -> session.get(Address.class, zip));
-		TransactionManagement.doInTransactionConsumer(session -> session.remove(address));
+		TransactionManagement.doInTransactionConsumer(session -> {
+			Address address = session.get(Address.class, zip);
+			session.remove(address);
+		});
 	}
 	
 	public static Address get(int zip) {
@@ -25,7 +29,9 @@ public class AddressService {
 	}
 	
 	public static void printAll() {
-		PrintToScreenHelper.print("Address: "+TransactionManagement.doInTransactionFunction(session -> session.createQuery("from Address", Address.class).list()));
+		TransactionManagement.doInTransactionConsumer(session -> {
+			PrintToScreenHelper.print("Address: "+ session.createQuery("from Address", Address.class).list());
+		});
 	}
 	
 	public static void deletePassportFromList(int zip,  int passportNo) {

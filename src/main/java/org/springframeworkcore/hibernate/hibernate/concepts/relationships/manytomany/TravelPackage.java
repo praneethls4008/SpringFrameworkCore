@@ -26,7 +26,7 @@ public class TravelPackage {
 	@Column(nullable=false)
 	private double price;
 	
-	@ManyToMany(mappedBy = "travelPackages")
+	@ManyToMany//(fetch = FetchType.EAGER)
 	private List<Customer> customers = new ArrayList<>();
 	
 	
@@ -67,7 +67,7 @@ public class TravelPackage {
 	
 	@Override
 	public String toString() {
-		return "\nTravelPackage [id=" + id + ", name=" + name + ", price=" + price + "]";
+		return "\n\tTravelPackage [id=" + id + ", name=" + name + ", price=" + price + "]";
 	}
 	
 }

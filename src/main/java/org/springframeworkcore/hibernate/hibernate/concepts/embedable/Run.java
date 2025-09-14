@@ -7,13 +7,16 @@ public class Run {
 	
 	public static void main(String[] args) {
 		
-		ClassA a = new ClassA();
-		ClassB b = new ClassB();
-		b.setCourseName("course1");
-		a.setName("name1");
-		a.setClassB(b);
 		
-		TransactionManagement.doInTransactionConsumer(session -> session.persist(a));
+		
+		TransactionManagement.doInTransactionConsumer(session -> {
+			ClassA a = new ClassA();
+			ClassB b = new ClassB();
+			b.setCourseName("course1");
+			a.setName("name1");
+			a.setClassB(b);
+			session.persist(a);
+			});
 		System.out.println(TransactionManagement.doInTransactionFunction(session -> session.createQuery("from ClassA", ClassA.class).list()));
 	}
 }

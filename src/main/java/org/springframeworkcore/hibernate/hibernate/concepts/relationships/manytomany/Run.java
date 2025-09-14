@@ -26,9 +26,9 @@ public class Run {
 		
 		CustomerService.addToTravelPackages(3, 1);
 		CustomerService.addToTravelPackages(3, 2);
-		
-		CustomerService.removeFromTravelPackages(1, 3);
-		
+//		
+//		CustomerService.removeFromTravelPackages(1, 3);
+//		
 		TravelPackageService.printAll();
 		CustomerService.printAll();
 		
