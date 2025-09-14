@@ -4,10 +4,10 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
@@ -21,7 +21,10 @@ public class Customer {
 	@Column(nullable=false)
 	private String name;
 	
-	@ManyToMany//(fetch = FetchType.EAGER)
+	//mappedBy wont create new table but ues/refers columnId of below field(customers) mentioned, table will be create for other travel table 
+	//by default fetch type is lazy for collections
+	//cascade is actions to be performed on child when any action taken on  parent
+	@ManyToMany(mappedBy = "customers")
 	private List<TravelPackage> travelPackages;
 	
 	

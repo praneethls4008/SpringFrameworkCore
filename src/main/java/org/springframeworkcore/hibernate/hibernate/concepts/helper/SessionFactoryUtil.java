@@ -7,6 +7,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.springframeworkcore.hibernate.hibernate.concepts.embedable.ClassA;
 import org.springframeworkcore.hibernate.hibernate.concepts.embedable.ClassB;
+import org.springframeworkcore.hibernate.hibernate.concepts.objectstates.HibernateObjectStates;
 import org.springframeworkcore.hibernate.hibernate.concepts.relationships.manytomany.Customer;
 import org.springframeworkcore.hibernate.hibernate.concepts.relationships.manytomany.TravelPackage;
 import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetomany.Address;
@@ -44,6 +45,7 @@ public class SessionFactoryUtil {
         properties.put(Environment.DATASOURCE, dataSource);
         properties.put(Environment.SHOW_SQL, "true");
         properties.put(Environment.HBM2DDL_AUTO, "create");
+        properties.put(Environment.FORMAT_SQL, "true");
 //        properties.put(Environment.HBM2DDL_AUTO, "update");
 //        properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
 
@@ -71,6 +73,7 @@ public class SessionFactoryUtil {
             cfg.addAnnotatedClass(Person.class);
             cfg.addAnnotatedClass(TravelPackage.class);
             cfg.addAnnotatedClass(Customer.class);
+            cfg.addAnnotatedClass(HibernateObjectStates.class);
 
             System.out.println("Building new SessionFactory...");
             sessionFactory = cfg.buildSessionFactory();

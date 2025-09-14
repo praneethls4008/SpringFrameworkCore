@@ -36,6 +36,7 @@ public class SessionFactoryUtil {
         properties = new Properties();
         properties.put(Environment.DATASOURCE, dataSource);
         properties.put(Environment.SHOW_SQL, "true");
+        properties.put(Environment.FORMAT_SQL, "true");
         properties.put(Environment.HBM2DDL_AUTO, "update");
 //        properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
 
