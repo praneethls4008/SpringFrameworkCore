@@ -2,6 +2,7 @@ package org.springframeworkcore.hibernate.hibernate.utils;
 
 import java.util.Properties;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
@@ -9,6 +10,8 @@ import org.springframeworkcore.hibernate.hibernate.entities.Customer;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
+import jakarta.persistence.EntityManager;
 
 public class SessionFactoryUtil {
 
@@ -79,5 +82,10 @@ public class SessionFactoryUtil {
             sessionFactory.close();
             System.out.println("SessionFactory closed.");
         }
+    }
+    
+    public static EntityManager getEntityManager() {
+        Session session = sessionFactory.openSession();   // native Hibernate session
+        return session.unwrap(EntityManager.class);       // unwrap as JPA EntityManager
     }
 }

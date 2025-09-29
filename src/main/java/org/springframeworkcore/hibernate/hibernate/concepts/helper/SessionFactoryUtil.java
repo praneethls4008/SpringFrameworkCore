@@ -2,6 +2,10 @@ package org.springframeworkcore.hibernate.hibernate.concepts.helper;
 
 import java.util.Properties;
 
+import org.springframeworkcore.hibernate.hibernate.concepts.hql.entity.Comment;
+import org.springframeworkcore.hibernate.hibernate.concepts.hql.entity.Post;
+import org.springframeworkcore.hibernate.hibernate.concepts.hql.entity.User;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
@@ -17,6 +21,8 @@ import org.springframeworkcore.hibernate.hibernate.concepts.relationships.onetoo
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
+import jakarta.persistence.EntityManager;
 
 public class SessionFactoryUtil {
 
@@ -65,16 +71,25 @@ public class SessionFactoryUtil {
         try {
             Configuration cfg = new Configuration();
             cfg.setProperties(properties);
-            cfg.addAnnotatedClass(ClassA.class);
-            cfg.addAnnotatedClass(ClassB.class);
-            cfg.addAnnotatedClass(Passport.class);
-            cfg.addAnnotatedClass(Address.class);
-            cfg.addAnnotatedClass(PassportForPerson.class);
-            cfg.addAnnotatedClass(Person.class);
-            cfg.addAnnotatedClass(TravelPackage.class);
-            cfg.addAnnotatedClass(Customer.class);
-            cfg.addAnnotatedClass(HibernateObjectStates.class);
-
+            
+//            cfg.addAnnotatedClass(ClassA.class);
+//            cfg.addAnnotatedClass(ClassB.class);
+            
+//            cfg.addAnnotatedClass(Passport.class);
+//            cfg.addAnnotatedClass(Address.class);
+            
+//            cfg.addAnnotatedClass(PassportForPerson.class);
+//            cfg.addAnnotatedClass(Person.class);
+            
+//            cfg.addAnnotatedClass(TravelPackage.class);
+//            cfg.addAnnotatedClass(Customer.class);
+            
+//            cfg.addAnnotatedClass(HibernateObjectStates.class);
+            
+            cfg.addAnnotatedClass(User.class);
+            cfg.addAnnotatedClass(Post.class);
+            cfg.addAnnotatedClass(Comment.class);
+            
             System.out.println("Building new SessionFactory...");
             sessionFactory = cfg.buildSessionFactory();
             System.out.println("SessionFactory built successfully.");
@@ -96,5 +111,10 @@ public class SessionFactoryUtil {
             sessionFactory.close();
             System.out.println("SessionFactory closed.");
         }
+    }
+    
+    public static EntityManager getEntityManager() {
+        Session session = sessionFactory.openSession();   // native Hibernate session
+        return session.unwrap(EntityManager.class);       // unwrap as JPA EntityManager
     }
 }
