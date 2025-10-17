@@ -17,6 +17,6 @@ public class Run {
 			a.setClassB(b);
 			session.persist(a);
 			});
-		System.out.println(TransactionManagement.doInTransactionFunction(session -> session.createQuery("from ClassA", ClassA.class).list()));
+		System.out.println(""+TransactionManagement.doInTransactionFunction(session -> session.createQuery("from ClassA", ClassA.class).list()));
 	}
 }
